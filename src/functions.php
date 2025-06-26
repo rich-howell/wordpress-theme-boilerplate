@@ -6,7 +6,9 @@ add_theme_support( 'post-thumbnails' );
 function add_lightbox_assets() {
 	wp_enqueue_style(
 		'lightbox-css',
-		get_template_directory_uri() . '/css/lightbox.css'
+		get_template_directory_uri() . '/css/lightbox.css',
+		null,
+		filemtime( get_template_directory() . '/css/lightbox.css' )
 	);
 
 	wp_enqueue_script(
@@ -35,13 +37,6 @@ function custom_theme_enqueue_styles() {
 		null,
 		filemtime( get_template_directory() . '/css/custom.css' )
 	);
-
-	wp_enqueue_style(
-		'events-css',
-		$theme_dir . '/css/events.css',
-		null,
-		filemtime( get_template_directory() . '/css/events.css' )
-	);
 }
 add_action( 'wp_enqueue_scripts', 'custom_theme_enqueue_styles' );
 
@@ -60,7 +55,7 @@ function custom_theme_enqueue_fontawesome() {
 			$tag,
 			$handle
 		) {
-			if ( 'font-awesome-cdn' === $handle ) {
+			if ( $handle === 'font-awesome-cdn' ) {
 				return '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />';
 			}
 			return $tag;
@@ -296,48 +291,3 @@ function bootstrap_pagination( \WP_Query $wp_query = null, $echo_out = true, $pa
 
 	return null;
 }
-
-/**
-* Difficulty Area taxonomy
-*/
-
-function custom_workout_difficulty_taxonomy() {
-
-	$labels = array(
-		'name'              => _x( 'Difficulty', 'taxonomy general name' ),
-		'singular_name'     => _x( 'Difficulty', 'taxonomy singular name' ),
-		'search_items'      => __( 'Search Difficulty' ),
-		'all_items'         => __( 'All Difficulty' ),
-		'parent_item'       => __( 'Parent Difficulty' ),
-		'parent_item_colon' => __( 'Parent Difficulty:' ),
-		'edit_item'         => __( 'Edit Difficulty' ),
-		'update_item'       => __( 'Update Difficulty' ),
-		'add_new_item'      => __( 'Add New Difficulty' ),
-		'new_item_name'     => __( 'New Difficulty Name' ),
-		'menu_name'         => __( 'Difficulty' ),
-	);
-
-	register_taxonomy(
-		'workout-difficulty',
-		array(
-			'workout',
-			'exercise',
-		),
-		array(
-			'hierarchical'      => true,
-			'labels'            => $labels,
-			'show_ui'           => true,
-			'show_admin_column' => true,
-			'query_var'         => true,
-			'rewrite'           => array( 'slug' => 'workout-difficulty' ),
-		)
-	);
-
-	$default_terms = array( 'Beginner', 'Intermediate', 'Advanced' );
-
-	foreach ( $default_terms as $term_name ) {
-		wp_insert_term( $term_name, 'workout-difficulty' );
-	}
-}
-
-add_action( 'init', 'custom_workout_difficulty_taxonomy' );
