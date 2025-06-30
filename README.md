@@ -46,9 +46,3 @@ This project uses PHPCS with WordPress-Extra rules, enforced via:
 - Local linting (`npm run lint`)
 - Auto-fix (`npm run fix`)
 - GitHub Actions (with inline comments for errors/warnings)
-
----
-
-## 🧩 Plugins
-
-See [`PLUGINS.md`](./PLUGINS.md) for recommended and required plugins.
