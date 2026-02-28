@@ -24,4 +24,4 @@ jobs:
 
       - name: Run PHPCS (fail on errors only)
         run: |
-          vendor/bin/phpcs --standard=phpcs.xml --severity=0 --error-severity=1 --warning-severity=0
+          vendor/bin/phpcs --standard=.phpcs.xml --severity=0 --error-severity=1 --warning-severity=0
