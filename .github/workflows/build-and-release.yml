@@ -2,12 +2,15 @@ name: Build and Release Theme
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -18,9 +21,12 @@ jobs:
         with:
           php-version: '8.2'
 
-      - name: Get version tag
+      - name: Get version from package.json
         id: vars
-        run: echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "tag_name=v${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Zip the theme
         run: |

@@ -23,7 +23,7 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist
 
       - name: Run PHPCS with Reviewdog
-        uses: reviewdog/action-phpcs@v1
+        uses: shirobrak/action-phpcs@v1.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-check
